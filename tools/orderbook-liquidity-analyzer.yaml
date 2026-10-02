@@ -1,0 +1,14 @@
+name: orderbook-liquidity-analyzer
+description: Inspects CLOB order book bids and asks for a specified token ID, computing spreads and slippage curves.
+input_schema:
+  type: object
+  properties:
+    token_id:
+      type: string
+      description: The Polymarket outcome token ID (YES/NO contract ID).
+    trade_size_usd:
+      type: number
+      description: Intended order size in USD to calculate estimated market slippage.
+      default: 100.0
+  required:
+    - token_id

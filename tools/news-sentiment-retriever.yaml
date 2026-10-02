@@ -1,0 +1,18 @@
+name: news-sentiment-retriever
+description: Fetches breaking news articles, polling indicators, and web search evidence relating to a specified market topic.
+input_schema:
+  type: object
+  properties:
+    query:
+      type: string
+      description: Search keywords or market event title to research.
+    source_type:
+      type: string
+      description: Information source type ('news', 'polling', 'all').
+      default: "all"
+    max_results:
+      type: integer
+      description: Maximum number of articles or evidence items to return.
+      default: 5
+  required:
+    - query

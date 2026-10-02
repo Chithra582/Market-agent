@@ -1,0 +1,18 @@
+name: polymarket-market-scanner
+description: Scans active Polymarket contracts across categories and retrieves current market prices, volume, and open interest.
+input_schema:
+  type: object
+  properties:
+    category:
+      type: string
+      description: Market category to query (e.g., 'politics', 'crypto', 'pop-culture', 'macro').
+    min_volume_24h:
+      type: number
+      description: Minimum 24-hour trading volume in USD to filter out illiquid markets.
+      default: 10000
+    limit:
+      type: integer
+      description: Maximum number of active markets to return.
+      default: 25
+  required:
+    - category

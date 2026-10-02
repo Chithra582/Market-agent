@@ -1,0 +1,21 @@
+spec_version: "0.1.0"
+name: "market-agent"
+version: "0.2.0"
+description: "Autonomous prediction market trading agent framework for Polymarket, integrating multi-source RAG, probability modeling, and on-chain execution."
+author: "Polymarket / Market-Agent Contributors"
+license: "MIT"
+metadata:
+  domain: "Finance / Autonomous Prediction Markets & Algorithmic Trading"
+  category: "Finance"
+  framework: "Polymarket CLOB API / Web3 / LangChain / Chroma"
+  language: "Python"
+skills:
+  - "prediction-market-arbitrage"
+  - "multi-source-sentiment-rag"
+  - "orderbook-depth-analysis"
+  - "probabilistic-risk-management"
+tools:
+  - "polymarket-market-scanner"
+  - "orderbook-liquidity-analyzer"
+  - "clob-order-dispatcher"
+  - "news-sentiment-retriever"

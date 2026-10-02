@@ -1,0 +1,26 @@
+name: clob-order-dispatcher
+description: Signs and submits an EIP-712 order to the Polymarket Central Limit Order Book (CLOB).
+input_schema:
+  type: object
+  properties:
+    token_id:
+      type: string
+      description: The Polymarket outcome token ID to trade.
+    side:
+      type: string
+      description: Order side ('BUY' or 'SELL').
+    price:
+      type: number
+      description: Limit price between 0.01 and 0.99 USDC.
+    size:
+      type: number
+      description: Number of outcome shares to order.
+    order_type:
+      type: string
+      description: Order execution type ('GTC', 'FOK', 'GTD').
+      default: "GTC"
+  required:
+    - token_id
+    - side
+    - price
+    - size
