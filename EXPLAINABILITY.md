@@ -1,8 +1,8 @@
 # EXPLAINABILITY.md
 
-This document explains the internal mechanisms, data lineage, operational boundaries, and governance framework of **# Explainability & Decision Transparency Report** (`market-agent`) in accordance with the **OpenGAP v0.1.0** specification for the **HiDevs GitAgent Passport** clearance pipeline.
+This document explains the internal mechanisms, data lineage, operational boundaries, and governance framework of **Market Agent** (`market-agent`) in accordance with the **OpenGAP v0.1.0** specification for the **HiDevs GitAgent Passport** clearance pipeline.
 
-> **Agent Name:** # Explainability & Decision Transparency Report (`market-agent`)  
+> **Agent Name:** Market Agent (`market-agent`)  
 > **Specification:** OpenGAP v0.1.0  
 > **Category / Domain:** Finance / Autonomous Prediction Markets & Algorithmic Trading  
 > **Compliance Standard:** OpenGAP Checkpoint 2 (Explainability & Decision Governance), OWASP LLM Top 10, MITRE ATLAS  
@@ -11,7 +11,7 @@ This document explains the internal mechanisms, data lineage, operational bounda
 
 ## How the Agent Decides
 
-# Explainability & Decision Transparency Report operates via a deterministic five-stage operational pipeline.
+The agent analyzes markets and executes prediction positions through a deterministic, 5-stage quantitative pipeline.
 
 ### 1. Decision Architecture
 
@@ -52,7 +52,6 @@ The runtime intake, state classification, evaluation, and execution tracking ope
 
 ### 2. Decision Logic & Routing Formulations
 
-Scoring
 Trading opportunity ranking and expected value calculation apply a probability mispricing formulation:
 
 $$\mathbb{E}[V] = P_{\text{est}} \cdot (1 - P_{\text{mkt}}) - (1 - P_{\text{est}}) \cdot P_{\text{mkt}} = P_{\text{est}} - P_{\text{mkt}}$$
@@ -71,29 +70,31 @@ Where $\alpha = 0.50$, $\beta = 0.30$, and $\gamma = 0.20$.
 
 ### 3. Thresholding & Refusal Decision Criteria
 
-# Explainability & Decision Transparency Report enforces strict operational boundaries and deterministic refusal thresholds:
-- **Refusal on ERR_INSUFFICIENT_EDGE**: **Minimum Expected Value ($\mathbb{E}[V]$)** halts execution with code `ERR_INSUFFICIENT_EDGE`.
-- **Refusal on ERR_EXCESSIVE_SPREAD**: **Bid-Ask Spread Margin** halts execution with code `ERR_EXCESSIVE_SPREAD`.
-- **Refusal on ERR_LOW_MARKET_LIQUIDITY**: **Minimum 24h Volume** halts execution with code `ERR_LOW_MARKET_LIQUIDITY`.
-- **Refusal on ERR_DAILY_DRAWDOWN_LIMIT_REACHED**: **Daily Portfolio Drawdown** halts execution with code `ERR_DAILY_DRAWDOWN_LIMIT_REACHED`.
-- **Refusal on ERR_INSUFFICIENT_COLLATERAL**: **Private Key / Balance Check** halts execution with code `ERR_INSUFFICIENT_COLLATERAL`.
+Market Agent enforces strict operational boundaries and deterministic refusal thresholds:
+- **Refusal on ERR_INSUFFICIENT_EDGE**: Minimum Expected Value ($\mathbb{E}[V]$) ($< 0.05$ (5% edge)) halts execution with code `ERR_INSUFFICIENT_EDGE`.
+- **Refusal on ERR_EXCESSIVE_SPREAD**: Bid-Ask Spread Margin ($> 0.05$ (5 cents)) halts execution with code `ERR_EXCESSIVE_SPREAD`.
+- **Refusal on ERR_LOW_MARKET_LIQUIDITY**: Minimum 24h Volume ($< \$10,000$ USD) halts execution with code `ERR_LOW_MARKET_LIQUIDITY`.
+- **Refusal on ERR_DAILY_DRAWDOWN_LIMIT_REACHED**: Daily Portfolio Drawdown ($\ge 10\%$ equity drop) halts execution with code `ERR_DAILY_DRAWDOWN_LIMIT_REACHED`.
+- **Refusal on ERR_INSUFFICIENT_COLLATERAL**: Private Key / Balance Check (Insufficient USDC) halts execution with code `ERR_INSUFFICIENT_COLLATERAL`.
 
 ### 4. Fallback Decision Mechanism
 
 Continuous operational stability is maintained through layered fault recovery:
+- **Tier 1 (Automated Order Cancel & Retry)**: If a limit order remains unfilled for 120 seconds while market prices move, the order is automatically canceled and repriced.
+- **Tier 2 (Defensive Derisking)**: If contradictory highimpact breaking news emerges, the agent automatically executes position hedge or partial unwinding.
 - **Model Fallback Cascade**: High-level reasoning and synthesis default to `gemini-2.0-flash` with automatic failover to `gpt-4o` and `claude-3-5-sonnet`.
 
 ### 5. Human-in-the-Loop Governance
 
 Human operators retain sovereign authority over the multi-agent execution lifecycle:
-- **Consequential Action Sign-Off**: Sensitive and consequential actions require operator sign-off.
-- **Offline Ledger Auditing**: Operators can verify execution records and state transitions offline.
+- **Tier 3 (Human Supervision Escalation)**: Orders exceeding \$2,500 USD or trades involving contested resolution criteria trigger a mobile webhook prompt requiring human manual approval.
+- **Benchmark Trajectory Auditing**: Operators inspect evaluation traces, raw generation tokens, and container logs to verify scoring fidelity.
 
 ---
 
 ## The Data It Uses
 
-# Explainability & Decision Transparency Report operates under strict principles of data minimization, environment isolation, and privacy protection.
+Market Agent operates under strict principles of data minimization, environment isolation, and privacy protection.
 
 ### 1. Ingested Input Data
 
@@ -104,7 +105,8 @@ The framework processes only operational data necessary to perform its functions
 
 ### 2. Configuration & Reference Data
 
-- **Configuration Schemas**: Declarative system policy files.
+- **Chroma Vector Database**: Embedding store indexing past event resolutions and news context.
+- **EVM Blockchain Node**: Polygon mainnet RPC endpoints for transaction settlement verification.
 
 ### 3. Base Model & Inference Lineage
 
@@ -122,7 +124,7 @@ The framework processes only operational data necessary to perform its functions
 
 ## Limitations
 
-Understanding the operational boundaries and technical constraints of # Explainability & Decision Transparency Report is essential for effective deployment.
+Understanding the operational boundaries and technical constraints of Market Agent is essential for effective deployment.
 
 ### 1. Oracle Resolution Ambiguity & Delays
 - **Limitation**: Polymarket market resolutions rely on UMA optimistic oracle votes, which may undergo disputes or prolonged delays.
